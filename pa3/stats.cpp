@@ -2,33 +2,16 @@
 #include "stats.h"
 
 stats::stats(PNG & im){
-    hist.resize(im.width(), vector<vector<int>> (im.height(), vector<int> (36, 0)));
+    hist.resize(im.width(), vector<vector<int>> (im.height(), vector<int> (36, 0)));     // initializing all the vectors to be the correct size (size of PNG)
     sumHueX.resize(im.width(), vector<double>(im.height(), 0.0));
     sumHueY.resize(im.width(), vector<double>(im.height(), 0.0));
     sumSat.resize(im.width(), vector<double>(im.height(), 0.0));
     sumLum.resize(im.width(), vector<double>(im.height(), 0.0));
     
-       // THIS IS GIVNG ME A SEGFAULT RUNING ./pa3
     
    
-    initializeSums(im);
+    initializeSums(im);   // This will initialize the first row and column in order to allow for the recursion in the next step to work
     
-   
-
-    // for (int i = 1; i < (int)im.height(); i++){
-    //     for (int j = 1; j < (int)im.width(); j++){
-    //         HSLAPixel * curr = im.getPixel(j,i);
-    //         double sat = getSums(sumSat[i-1][j], sumSat[i][j-1], sumSat[i-1][j-1], curr->s);
-    //         double lum = getSums(sumLum[i-1][j], sumLum[i][j-1], sumLum[i-1][j-1], curr->l);
-    //         double hueX = getSums(sumHueX[i-1][j], sumHueX[i][j-1], sumHueX[i-1][j-1], cos(curr->h * PI / 180));
-    //         double hueY = getSums(sumHueY[i-1][j], sumHueY[i][j-1], sumHueY[i-1][j-1], sin(curr->h * PI / 180));
-
-    //         sumSat[i][j] = sat;
-    //         sumLum[i][j] = lum;
-    //         sumHueX[i][j] = hueX;
-    //         sumHueY[i][j] = hueY;
-    //     }
-    // }
 
     for (int j = 1; j < (int)im.height(); j++){
         for (int i = 1; i < (int)im.width(); i++){
@@ -36,7 +19,7 @@ stats::stats(PNG & im){
             double sat = getSums(sumSat[i-1][j], sumSat[i][j-1], sumSat[i-1][j-1], curr->s);
             double lum = getSums(sumLum[i-1][j], sumLum[i][j-1], sumLum[i-1][j-1], curr->l);
             double hueX = getSums(sumHueX[i-1][j], sumHueX[i][j-1], sumHueX[i-1][j-1], cos(curr->h * PI / 180));
-            double hueY = getSums(sumHueY[i-1][j], sumHueY[i][j-1], sumHueY[i-1][j-1], sin(curr->h * PI / 180));
+            double hueY = getSums(sumHueY[i-1][j], sumHueY[i][j-1], sumHueY[i-1][j-1], sin(curr->h * PI / 180));   
 
             sumSat[i][j] = sat;
             sumLum[i][j] = lum;
@@ -51,48 +34,6 @@ stats::stats(PNG & im){
 }
 
 void stats::initializeHist(PNG & im){
-    // for(int i = 0; i < (int)im.height(); i++){
-    //     for (int j = 0; j < (int)im.width(); j++){
-            
-            
-    //         HSLAPixel * curr = im.getPixel(j,i);
-    //         int k = curr->h / 10;
-            
-    //         hist[i][j][k]++;
-
-            
-
-    //         if (i > 0){
-    //             for (int a = i-1; a >= 0; a--){
-    //                 HSLAPixel * temp = im.getPixel(j,a);
-    //                 int t = temp->h / 10;
-    //                 hist[i][j][t]++;
-    //             }
-    //         }
-
-           
-
-    //         if (j > 0){
-    //             for (int b = j-1; b >= 0; b--){
-    //                 HSLAPixel * temp = im.getPixel(b,i);
-    //                 int t = temp->h / 10;
-    //                 hist[i][j][t]++;
-                    
-    //             }
-    //         }
-
-             
-
-    //         if (i > 0 && j > 0){
-    //             for (k = 0; k < 36; k++){
-    //                 hist[i][j][k] += hist[i-1][j-1][k];
-    //             }
-    //         }
-            
-
-            
-    //     }
-    // }
 
     for(int j = 0; j < (int)im.height(); j++){
         for (int i = 0; i < (int)im.width(); i++){
